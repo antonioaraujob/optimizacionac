@@ -1,3 +1,6 @@
 *.o
 *~
 moc_*
+optimizacionac
+ui_*
+

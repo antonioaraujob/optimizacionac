@@ -82,8 +82,17 @@ double Individual::getPerformanceValue()
     return performanceValue;
 }
 
+void Individual::setParameter(int i, double value)
+{
+    parametersList.replace(i,value);
+}
 
 double Individual::getParameter(int i)
 {
     return parametersList.at(i);
+}
+
+int Individual::getNumberOfParameters()
+{
+    return parametersList.count();
 }

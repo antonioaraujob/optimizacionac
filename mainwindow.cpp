@@ -6,6 +6,7 @@
 #include "individual.h"
 #include "situationalknowledge.h"
 #include "normativeknowledge.h"
+#include "populationvariation.h"
 
 
 
@@ -13,7 +14,7 @@
 
 
 
-
+// Funcion de comparacion de individuos con respecto al valor de desempeno
 inline static bool x_less_than(Individual *p1, Individual *p2)
 {
     return p1->getPerformanceValue() < p2->getPerformanceValue();
@@ -28,6 +29,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    //for (int k=0;k<10;k++)
+        PopulationVariation p;
+        p.mutateIndividualParameter(10,1);
+
+
+
+
     // ************************************************************************
     // parametros de la ejecucion del algoritmo cultural
 
@@ -41,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
     double acceptPercentage = 20;
 
     // Numero de individuos de la poblacion
-    int population = 10;
+    int population = 15;
 
 
     // ************************************************************************
@@ -102,15 +110,24 @@ MainWindow::MainWindow(QWidget *parent) :
     sKnowledge->getExemplar(0)->printIndividual();
     qDebug("numero de ejemplares en conocimiento situacional: %d",sKnowledge->getCountOfExemplars());
 
+    // prueba de actualizacion del conocimiento situacional
+    QList<Individual *> bestIndList;
+    bestIndList.append(populationList.at(populationList.count()-1));
+    sKnowledge->updateSituationalKnowledge(bestIndList);
+    sKnowledge->getExemplar(0)->printIndividual();
+    qDebug("numero de ejemplares en conocimiento situacional: %d",sKnowledge->getCountOfExemplars());
+
 
     // para el conocimiento normativo la inicializacion se ejecuta al crear las variables
     // con sus correspondientes valores de restricciones
 
+    // una lista de individuos de prueba
     QList<Individual *> selectedIndList;
     selectedIndList.append(populationList.at(populationList.count()-1));
-    selectedIndList.append(populationList.at(populationList.count()-2));
+    //selectedIndList.append(populationList.at(populationList.count()-2));
 
-    nKnowledge->updateNormativeKnowledge(selectedIndList); // falta la lista de individuos
+    // prueba de actualizacion del conocimiento normativo
+    nKnowledge->updateNormativeKnowledge(selectedIndList);
     qDebug("++++++ conocimiento normativo actualizado+++++");
     nKnowledge->printNormativeKnowledge();
     qDebug("++++++++++++++++++++++++++++++++++++++++++++++");

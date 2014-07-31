@@ -33,7 +33,10 @@ int NormativeKnowledge::getCountOfVariables()
     return NormativeKnowledgeVariableList.count();
 }
 
-
+NormativeKnowledgeVariable * NormativeKnowledge::getNormativeKnowledgeVariable(int ind)
+{
+    return NormativeKnowledgeVariableList.at(ind);
+}
 
 void NormativeKnowledge::updateNormativeKnowledge(QList<Individual *> selectedIndividualList)
 {
@@ -60,12 +63,12 @@ void NormativeKnowledge::updateNormativeKnowledge(QList<Individual *> selectedIn
                 first = false;
                 continue;
             }
-            if (auxIndividual1->getParameter(i) < loweri)
+            if (auxIndividual1->getParameter(i) <= loweri)
             {
                 loweri = auxIndividual1->getParameter(i);
                 performanceLoweri = auxIndividual1->getPerformanceValue();
             }
-            if (auxIndividual1->getParameter(i) > upperi)
+            if (auxIndividual1->getParameter(i) >= upperi)
             {
                 upperi = auxIndividual1->getParameter(i);
                 performanceUpperi = auxIndividual1->getPerformanceValue();

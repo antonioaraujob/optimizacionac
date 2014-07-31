@@ -21,10 +21,11 @@ public:
     // Constructor de la clase
     explicit NormativeKnowledge(QObject *parent = 0);
 
-
     // Retorna la cantidad de variables en el conocimiento normativo
     int getCountOfVariables();
 
+    // Retorna la variable del conocimiento normativo pasada como argumento
+    NormativeKnowledgeVariable * getNormativeKnowledgeVariable(int ind);
 
 
     // Actualiza el conocimiento normativo a partir de la lista de indivuos

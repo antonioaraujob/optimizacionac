@@ -43,8 +43,14 @@ public:
     // Retorna el valor de desempeno del individuo
     double getPerformanceValue();
 
+    // Asigna el valor del parametro en la posicion i
+    void setParameter(int i, double value);
+
     // Retorna el valor del parametro en la posicion i
     double getParameter(int i);
+
+    // Retorna el numero de parametros del individuo
+    int getNumberOfParameters();
 
 signals:
     

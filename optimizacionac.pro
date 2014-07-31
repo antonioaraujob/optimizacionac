@@ -11,18 +11,21 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = optimizacionac
 TEMPLATE = app
 
+QMAKE_CXXFLAGS += -std=c++11
 
 SOURCES += main.cpp\
         mainwindow.cpp \
     individual.cpp \
     situationalknowledge.cpp \
     normativeknowledge.cpp \
-    normativeknowledgevariable.cpp
+    normativeknowledgevariable.cpp \
+    populationvariation.cpp
 
 HEADERS  += mainwindow.h \
     individual.h \
     situationalknowledge.h \
     normativeknowledge.h \
-    normativeknowledgevariable.h
+    normativeknowledgevariable.h \
+    populationvariation.h
 
 FORMS    += mainwindow.ui

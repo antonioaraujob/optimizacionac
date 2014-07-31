@@ -32,6 +32,11 @@ public:
     // Retorna el numero de ejemplares en el conocimiento situacional
     int getCountOfExemplars();
 
+    // Actualiza el conocimiento situacional. El argumento es una lista de los
+    // mejores individuos
+    void updateSituationalKnowledge(QList<Individual *> bestIndividualsList);
+
+
 signals:
     
 public slots:
