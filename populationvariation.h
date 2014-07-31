@@ -26,8 +26,11 @@ public:
     explicit PopulationVariation(QObject *parent = 0);
     
     // Constructor de la clase
-    PopulationVariation(QList<Individual *> population, SituationalKnowledge * sKnowledge, NormativeKnowledge * nKnowledge);
-
+    // population: lista de la poblacion actual
+    // sKnowledge: conocimiento situacional
+    // sKnowledge: conocimiento normativo
+    // std: desviacion estandar para la distribucion normal de la mutacion
+    PopulationVariation(QList<Individual *> population, SituationalKnowledge * sKnowledge, NormativeKnowledge * nKnowledge, int std);
 
     // Retorna la nueva poblacion luego de la variacion
     QList<Individual *> getNewPopulation();
@@ -38,16 +41,31 @@ public:
     int selectKnowledgeInfluence();
 
     // Retorna un hijo a partir de un padre y de la influencia situacional
-    Individual * situationalInfluence(Individual * father, SituationalKnowledge * sKnowledge);
+    // father: individuo padre
+    // sKnowledge: conocimiento situacional
+    // std: desviacion estandar para la mutacion gausiana
+    Individual * situationalInfluence(Individual * father, SituationalKnowledge * sKnowledge, int std);
 
     // Retorna un hijo a partir de un padre y de la influencia normativa
-    Individual * normativeInfluence(Individual * father, NormativeKnowledge * nKnowledge);
+    // father: individuo padre
+    // sKnowledge: conocimiento situacional
+    // std: desviacion estandar para la mutacion gausiana
+    Individual * normativeInfluence(Individual * father, NormativeKnowledge * nKnowledge, int std);
 
     // Retorna un numero aletorio entre a y b
     int getRandom(int low, int high);
 
     // Ejecuta una mutacion gausiana de un parametro de un individuo
-    int mutateIndividualParameter(int mean, int std);
+    int mutateIndividualParameter(int index, int mean, int std);
+
+    // Retorna verdadero si el parametro a revisar de un individuo corresponde a un canal
+    bool isThisParameterAChannel(int index);
+
+    // Retorna verdadero si el parametro a revisar de un individuo corresponde a un MinChannelTime
+    bool isThisParameterAMinChannelTime(int index);
+
+    // Retorna verdadero si el parametro a revisar de un individuo corresponde a un MaxChannelTime
+    bool isThisParameterAMaxChannelTime(int index);
 
 signals:
     

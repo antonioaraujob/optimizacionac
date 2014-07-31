@@ -29,12 +29,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //for (int k=0;k<10;k++)
-        PopulationVariation p;
-        p.mutateIndividualParameter(10,1);
 
-
-
+    PopulationVariation p;
+    p.mutateIndividualParameter(0,9,1);
 
     // ************************************************************************
     // parametros de la ejecucion del algoritmo cultural
