@@ -34,7 +34,7 @@ public:
 
 
 
-    void doVariation(QList<Individual *> population, SituationalKnowledge * sKnowledge, NormativeKnowledge * nKnowledge, int std);
+    void doVariation(QList<Individual *> population, SituationalKnowledge * sKnowledge, NormativeKnowledge * nKnowledge, double std);
 
     // Retorna la nueva poblacion luego de la variacion.
     // Esta poblacion es de tamano 2P y se pasara a la clase PoplationSelection
@@ -49,19 +49,19 @@ public:
     // father: individuo padre
     // sKnowledge: conocimiento situacional
     // std: desviacion estandar para la mutacion gausiana
-    Individual * situationalInfluence(Individual * father, SituationalKnowledge * sKnowledge, int std);
+    Individual * situationalInfluence(Individual * father, SituationalKnowledge * sKnowledge, double std);
 
     // Retorna un hijo a partir de un padre y de la influencia normativa
     // father: individuo padre
     // sKnowledge: conocimiento situacional
     // std: desviacion estandar para la mutacion gausiana
-    Individual * normativeInfluence(Individual * father, NormativeKnowledge * nKnowledge, int std);
+    Individual * normativeInfluence(Individual * father, NormativeKnowledge * nKnowledge, double std);
 
     // Retorna un numero aletorio entre a y b
     int getRandom(int low, int high);
 
     // Ejecuta una mutacion gausiana de un parametro de un individuo
-    int mutateIndividualParameter(int index, int mean, int std);
+    int mutateIndividualParameter(int index, int mean, double std);
 
     // Retorna verdadero si el parametro a revisar de un individuo corresponde a un canal
     bool isThisParameterAChannel(int index);

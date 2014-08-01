@@ -47,7 +47,7 @@ PopulationVariation::PopulationVariation(QList<Individual *> population, Situati
 }
 
 void PopulationVariation::doVariation(QList<Individual *> population, SituationalKnowledge * sKnowledge,
-                    NormativeKnowledge * nKnowledge, int std)
+                    NormativeKnowledge * nKnowledge, double std)
 {
     newPopulation.clear();
 
@@ -116,7 +116,7 @@ int PopulationVariation::selectKnowledgeInfluence()
 
 
 Individual * PopulationVariation::situationalInfluence(Individual * father,
-                                                       SituationalKnowledge * sKnowledge, int std)
+                                                       SituationalKnowledge * sKnowledge, double std)
 {
     //qDebug("   situationalInfluence");
     Individual * offspring = new Individual();
@@ -159,7 +159,7 @@ Individual * PopulationVariation::situationalInfluence(Individual * father,
 
 
 Individual * PopulationVariation::normativeInfluence(Individual * father,
-                                                     NormativeKnowledge * nKnowledge, int std)
+                                                     NormativeKnowledge * nKnowledge, double std)
 {
     //qDebug("   normativeInfluence");
     Individual * offspring = new Individual();
@@ -203,7 +203,7 @@ int PopulationVariation::getRandom(int low, int high)
 
 
 
-int PopulationVariation::mutateIndividualParameter(int index, int mean, int std)
+int PopulationVariation::mutateIndividualParameter(int index, int mean, double std)
 {
     // mean representa el parametro sobre el cual se va a mutar
     // std la desviacion estandar de la distribucion normal

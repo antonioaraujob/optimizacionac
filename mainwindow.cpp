@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include <QTime>
+#include <QMessageBox>
 
 #include "individual.h"
 #include "situationalknowledge.h"
@@ -30,6 +31,148 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    this->setFixedSize(600,350);
+
+    QValidator * validatorPopSize = new QIntValidator(1, 1000, this);
+    ui->lineEditPopulationSize->setValidator(validatorPopSize);
+
+    QValidator * validatorGenerations = new QIntValidator(1, 50, this);
+    ui->lineEditGenerationNumber->setValidator(validatorGenerations);
+
+    QValidator * validatorAcceptedPercentage = new QIntValidator(1, 100, this);
+    ui->lineEditAceptationPercentage->setValidator(validatorAcceptedPercentage);
+
+    QValidator * validatorMutationStd = new QIntValidator(1, 10, this);
+    ui->lineEditMutationStd->setValidator(validatorMutationStd);
+
+    connect(ui->pushButtonRun, SIGNAL(clicked()), this, SLOT(executeAlgorithm()));
+
+    generation = 0;
+    maxGenerations = 0;
+    acceptedPercentage = 0;
+    population  = 0;
+    numberOfAcceptedIndividuals = 0;
+    mutationSTd = 0;
+
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+
+
+QList<Individual *> MainWindow::initializePopulation(int nPopulation)
+{
+    QList<Individual *> populationList;
+    Individual * individuo;
+
+    // inicializacion de la poblacion
+    for (int i=0; i<nPopulation; i++)
+    {
+        individuo = new Individual();
+        //individuo->printIndividual();
+        populationList.append(individuo);
+    }
+    qDebug("tamano de la poblacion: %d",populationList.count());
+    return populationList;
+}
+
+
+void MainWindow::evaluatePopulation()
+{
+    Individual * ind;
+    for (int i=0; i<populationList.count();i++)
+    {
+        ind = populationList.at(i);
+        ind->calculatePerformanceValue();
+    }
+}
+
+
+QList<Individual *> MainWindow::AcceptedPopulation()
+{
+    QList<Individual *> acceptedIndividualsList;
+
+    for (int i=(populationList.count()-numberOfAcceptedIndividuals); i<(populationList.count()); i++)
+    {
+        acceptedIndividualsList.append(populationList.at(i));
+    }
+    return acceptedIndividualsList;
+}
+
+
+void MainWindow::printPopulation()
+{
+    for (int i=0; i<populationList.count();i++)
+    {
+        populationList.at(i)->printIndividual();
+    }
+}
+
+
+
+int MainWindow::getGenerationCount()
+{
+    return generation;
+}
+
+
+int MainWindow::getMaxGenerations()
+{
+    return maxGenerations;
+}
+
+
+int MainWindow::getPopulationSize()
+{
+    return populationList.count();
+}
+
+
+double MainWindow::getAcceptedPercentage()
+{
+    return acceptedPercentage;
+}
+
+
+int MainWindow::getAcceptedIndividuals()
+{
+    return numberOfAcceptedIndividuals;
+}
+
+double MainWindow::getMutationStd()
+{
+    return mutationSTd;
+}
+
+bool MainWindow::validateFields()
+{
+    if ( (!ui->lineEditPopulationSize->text().isEmpty()) &&
+         (!ui->lineEditGenerationNumber->text().isEmpty()) &&
+         (!ui->lineEditAceptationPercentage->text().isEmpty()) &&
+         (!ui->lineEditMutationStd->text().isEmpty()) )
+        return true;
+    else
+        return false;
+}
+
+
+void MainWindow::executeAlgorithm()
+{
+    QMessageBox msgBox;
+    if (!validateFields())
+    {
+        msgBox.setText("Los parametros del algoritmo no estan completos. Debe especificarlos.");
+        msgBox.exec();
+        return;
+    }
+
+
+    msgBox.setText("se debe ejecutar el algoritmo!.");
+    msgBox.exec();
+
     qsrand((uint)QTime::currentTime().msec());
 
 
@@ -40,14 +183,15 @@ MainWindow::MainWindow(QWidget *parent) :
     generation = 0;
 
     // Maximo numero de generacion
-    maxGenerations = 5;
+    maxGenerations = ui->lineEditGenerationNumber->text().toInt();
 
     // Porcentaje de aceptacion de individuos
-    acceptedPercentage = 20;
+    acceptedPercentage = ui->lineEditAceptationPercentage->text().toInt();
 
     // Numero de individuos de la poblacion
-    population = 10;
+    population = ui->lineEditPopulationSize->text().toInt();
 
+    mutationSTd = ui->lineEditMutationStd->text().toDouble();
 
     // ************************************************************************
 
@@ -70,7 +214,7 @@ MainWindow::MainWindow(QWidget *parent) :
         populationList.at(i)->printIndividual();
     }
 
-    //qDebug("tamano de la poblacion: %d",populationList.count());
+    qDebug("tamano de la poblacion: %d",populationList.count());
 
     // ************************************************************************
 
@@ -162,7 +306,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
         // Ejecutar variacion en la poblacion con la influencia del espacio de creencias
-        populationVariator->doVariation(populationList,sKnowledge,nKnowledge,1);
+        populationVariator->doVariation(populationList, sKnowledge, nKnowledge, getMutationStd());
 
         qDebug("******");
         // nueva poblacion
@@ -200,63 +344,9 @@ MainWindow::MainWindow(QWidget *parent) :
     qDebug("*** tamano de la poblacion final: %d", populationList.count());
 
 
+
+
 }
-
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
-
-
-
-QList<Individual *> MainWindow::initializePopulation(int nPopulation)
-{
-    QList<Individual *> populationList;
-    Individual * individuo;
-
-    // inicializacion de la poblacion
-    for (int i=0; i<nPopulation; i++)
-    {
-        individuo = new Individual();
-        //individuo->printIndividual();
-        populationList.append(individuo);
-    }
-    qDebug("tamano de la poblacion: %d",populationList.count());
-    return populationList;
-}
-
-
-void MainWindow::evaluatePopulation()
-{
-    Individual * ind;
-    for (int i=0; i<populationList.count();i++)
-    {
-        ind = populationList.at(i);
-        ind->calculatePerformanceValue();
-    }
-}
-
-
-QList<Individual *> MainWindow::AcceptedPopulation()
-{
-    QList<Individual *> acceptedIndividualsList;
-
-    for (int i=(populationList.count()-numberOfAcceptedIndividuals); i<(populationList.count()); i++)
-    {
-        acceptedIndividualsList.append(populationList.at(i));
-    }
-    return acceptedIndividualsList;
-}
-
-
-void MainWindow::printPopulation()
-{
-    for (int i=0; i<populationList.count();i++)
-    {
-        populationList.at(i)->printIndividual();
-    }
-}
-
 
 
 
