@@ -19,13 +19,15 @@ SOURCES += main.cpp\
     situationalknowledge.cpp \
     normativeknowledge.cpp \
     normativeknowledgevariable.cpp \
-    populationvariation.cpp
+    populationvariation.cpp \
+    populationselection.cpp
 
 HEADERS  += mainwindow.h \
     individual.h \
     situationalknowledge.h \
     normativeknowledge.h \
     normativeknowledgevariable.h \
-    populationvariation.h
+    populationvariation.h \
+    populationselection.h
 
 FORMS    += mainwindow.ui

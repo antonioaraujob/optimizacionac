@@ -32,7 +32,12 @@ public:
     // std: desviacion estandar para la distribucion normal de la mutacion
     PopulationVariation(QList<Individual *> population, SituationalKnowledge * sKnowledge, NormativeKnowledge * nKnowledge, int std);
 
-    // Retorna la nueva poblacion luego de la variacion
+
+
+    void doVariation(QList<Individual *> population, SituationalKnowledge * sKnowledge, NormativeKnowledge * nKnowledge, int std);
+
+    // Retorna la nueva poblacion luego de la variacion.
+    // Esta poblacion es de tamano 2P y se pasara a la clase PoplationSelection
     QList<Individual *> getNewPopulation();
 
     // Retorna un entero para seleccionar de cual tipo de conocimiento ejercer influencia

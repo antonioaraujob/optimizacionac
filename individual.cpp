@@ -53,14 +53,17 @@ double Individual::getRandomMaxChannelTime(){
 void Individual::printIndividual()
 {
     //qDebug("El Individual creado es el siguiente:");
-    QString individualString;
+    QString individualString("   ");
     for (int j=0;j<33;j++)
     {
         individualString.append(QString::number(parametersList.at(j)));
-        individualString.append(" ");
+        if (j!=32)
+            individualString.append("-");
     }
+    individualString.append("|");
+    individualString.append(QString::number(getPerformanceValue()));
     qDebug(qPrintable(individualString));
-    qDebug("Fo:%f",getPerformanceValue());
+    //qDebug("Fo:%f",getPerformanceValue());
 }
 
 
