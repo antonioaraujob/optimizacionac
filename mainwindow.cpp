@@ -35,15 +35,19 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QValidator * validatorPopSize = new QIntValidator(1, 1000, this);
     ui->lineEditPopulationSize->setValidator(validatorPopSize);
+    ui->lineEditPopulationSize->setToolTip("[1..1000]");
 
     QValidator * validatorGenerations = new QIntValidator(1, 50, this);
     ui->lineEditGenerationNumber->setValidator(validatorGenerations);
+    ui->lineEditGenerationNumber->setToolTip("[1..50]");
 
     QValidator * validatorAcceptedPercentage = new QIntValidator(1, 100, this);
     ui->lineEditAceptationPercentage->setValidator(validatorAcceptedPercentage);
+    ui->lineEditAceptationPercentage->setToolTip("[1..100]");
 
     QValidator * validatorMutationStd = new QIntValidator(1, 10, this);
     ui->lineEditMutationStd->setValidator(validatorMutationStd);
+    ui->lineEditMutationStd->setToolTip("[1..10]");
 
     connect(ui->pushButtonRun, SIGNAL(clicked()), this, SLOT(executeAlgorithm()));
 
