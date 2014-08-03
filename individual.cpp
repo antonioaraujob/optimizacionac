@@ -25,6 +25,14 @@ Individual::Individual(QObject *parent) :
 }
 
 
+Individual::Individual(Individual &p)
+{
+    for (int i=0; i<33; i++)
+    {
+        parametersList.append(p.getParameter(i));
+    }
+}
+
 int Individual::getRandomChannel()
 {
     // el rango es 1 <= channel <= 11
@@ -66,6 +74,21 @@ void Individual::printIndividual()
     //qDebug("Fo:%f",getPerformanceValue());
 }
 
+QString Individual::getIndividualAsQString()
+{
+    //qDebug("El Individual creado es el siguiente:");
+    QString individualString("   ");
+    for (int j=0;j<33;j++)
+    {
+        individualString.append(QString::number(parametersList.at(j)));
+        if (j!=32)
+            individualString.append("-");
+    }
+    individualString.append("|");
+    individualString.append(QString::number(getPerformanceValue()));
+    return individualString;
+    //qDebug(qPrintable(individualString));
+}
 
 void Individual::setPerformanceValue(double performance)
 {

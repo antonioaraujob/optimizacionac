@@ -22,6 +22,9 @@ public:
     // Constructor de la clase
     explicit Individual(QObject *parent = 0);
     
+    // Constructor copia
+    Individual(Individual &p);
+
     // Retorna un numero de canal aleatorio
     int getRandomChannel();
 
@@ -33,6 +36,9 @@ public:
 
     // Imprime el individuo en una cadena legible al humano
     void printIndividual();
+
+    // Retorna el individuo como una cadena
+    QString getIndividualAsQString();
 
     // Establece el valor de desempeno del individuo
     void setPerformanceValue(double performance);

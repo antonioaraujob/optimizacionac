@@ -3,6 +3,9 @@
 
 #include <QTime>
 #include <QMessageBox>
+#include <QFile>
+#include <QTextStream>
+#include <QStringListModel>
 
 #include "individual.h"
 #include "situationalknowledge.h"
@@ -10,9 +13,14 @@
 #include "populationvariation.h"
 #include "populationselection.h"
 
-
-
-
+/*
+// encabezados para graficas con qwt
+#include <qwt_plot.h>
+#include <qwt_plot_curve.h>
+#include <qwt_plot_grid.h>
+#include <qwt_symbol.h>
+#include <qwt_legend.h>
+*/
 
 
 
@@ -31,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    this->setFixedSize(600,350);
+    this->setFixedSize(600, 520);
 
     QValidator * validatorPopSize = new QIntValidator(1, 1000, this);
     ui->lineEditPopulationSize->setValidator(validatorPopSize);
@@ -220,6 +228,9 @@ void MainWindow::executeAlgorithm()
 
     qDebug("tamano de la poblacion: %d",populationList.count());
 
+    // limpiar la lista de mejores individuos por generacion
+    bestGenerationIndividualList.clear();
+
     // ************************************************************************
 
     // inicializacion del espacio de creencias
@@ -251,7 +262,7 @@ void MainWindow::executeAlgorithm()
 
 
     // lista que mantiene los mejores individuos para el conocimiento situacional
-    QList<Individual *> bestIndList;
+    //QList<Individual *> bestGenerationIndividualList;
 
     // lista de individuos seleccionados para influenciar el espacio
     QList<Individual *> acceptedIndList;
@@ -291,8 +302,8 @@ void MainWindow::executeAlgorithm()
         // Ajustar el espacio de creencias con los individuos aceptados
 
         // actualizacion del conocimiento situacional
-        bestIndList.append(populationList.at(populationList.count()-1));
-        sKnowledge->updateSituationalKnowledge(bestIndList);
+        bestGenerationIndividualList.append(populationList.at(populationList.count()-1));
+        sKnowledge->updateSituationalKnowledge(bestGenerationIndividualList);
         qDebug("---------------------------------------------------------------");
         sKnowledge->getExemplar(0)->printIndividual();
         qDebug("numero de ejemplares en conocimiento situacional: %d",sKnowledge->getCountOfExemplars());
@@ -344,13 +355,80 @@ void MainWindow::executeAlgorithm()
         qDebug("generacion: %d",generation);
     }while(generation < maxGenerations); // fin de la repeticion
 
+    qDebug("---numero de individuos de la lista de mejores individuos por generacion %d",bestGenerationIndividualList.count());
+
+    // mostrar los mejores individuos de las generaciones en ListView
+    populateListView();
+
+    qDebug("---");
+
     qDebug("*** evolucionaron %d generaciones",generation);
     qDebug("*** tamano de la poblacion final: %d", populationList.count());
 
 
-
+    resultGenerationVsFo();
 
 }
+
+
+
+void MainWindow::resultGenerationVsFo()
+{
+    QFile file("/tmp/generacionVsFo.txt");
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+            return;
+
+    QTextStream out(&file);
+
+    for (int z=0; z<bestGenerationIndividualList.count(); z++)
+    {
+        out << z+1 << " " << bestGenerationIndividualList.at(z)->getPerformanceValue() << "\n" ;
+    }
+
+}
+
+void MainWindow::resultChannelVsTime()
+{
+    // iterar por los individuos
+    for (int i=0; i<bestGenerationIndividualList.count(); i++)
+    {
+        QString fileName = "/tmp/fs";
+        fileName.append(QString::number(i));
+
+        QFile file(fileName);
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+                return;
+        QTextStream out(&file);
+        //out <<
+
+
+
+    }
+
+}
+
+
+void MainWindow::populateListView()
+{
+
+    QStringList individuals;
+
+    QString aux;
+    for (int z=bestGenerationIndividualList.count()-1; z>=0; z-- )
+    {
+        aux.append(bestGenerationIndividualList.at(z)->getIndividualAsQString());
+        individuals << aux;
+        aux.clear();
+    }
+
+    QStringListModel *model = new QStringListModel();
+    model->setStringList(individuals);
+
+    ui->listViewBestIndividuals->setModel(model);
+
+}
+
+
 
 
 

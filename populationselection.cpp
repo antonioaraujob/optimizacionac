@@ -15,7 +15,7 @@ PopulationSelection::PopulationSelection(QObject *parent) :
 
 PopulationSelection::PopulationSelection(QList<Individual *> population2p)
 {
-    int populationSize = population2p.count()/2;
+    //int populationSize = population2p.count()/2;
 
     qSort(population2p.begin(), population2p.end(), x_less_than);
 

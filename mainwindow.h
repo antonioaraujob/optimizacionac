@@ -20,6 +20,8 @@ private:
     // Lista de la poblacion de individuos
     QList<Individual *> populationList;
 
+    // lista que mantiene los mejores individuos de las generaciones
+    QList<Individual *> bestGenerationIndividualList;
 
     // Contador de generaciones
     int generation;
@@ -77,6 +79,14 @@ public:
 
     // Imprime la poblacion
     void printPopulation();
+
+    // resultado de generacion vs funcion objetivo
+    void resultGenerationVsFo();
+
+    void resultChannelVsTime();
+
+    // Coloca los individuos en el objeto ListView
+    void populateListView();
 
 private slots:
 
